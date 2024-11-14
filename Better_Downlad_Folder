@@ -1,0 +1,51 @@
+#!/bin/bash
+#This is where the program deletes any extra programs
+recycling_truck(){
+    echo "Working!"
+    cd ~/Downloads/
+    find ~/Downloads/ -type f \( -iname "*.exe" -o -iname "*.msix" -o -iname "*.apk" -o -iname "*.bin" -o -iname "*.app" \) \( -iname "*x32*" -o -iname "*x64*" -o -iname "*x86*" -o -iname "*setup*" -o -iname "*installer*" \) | while read file; do mv "$file" "$RECYCLE.BIN"; done
+}
+#Main source of the program where it makes folders/directorys and move the files to them
+moving_truck(){
+    echo "Running!"
+    cd ~/Downloads/
+    mkdir -p ~/Documents/Zips && find . -type f \( -iname "*.zip" -o -iname "*.tar.gz" -o -iname "*.tar.bz2" -o -iname "*.tar.xz" -o -iname "*.rar" -o -iname "*.7z" -o -iname "*.gz" \) -exec mv {} ~/Documents/Zips/ \;
+    mkdir -p ~/Documents/Reading_Files && find . -type f \( -iname "*.txt" -o -iname "*.pptx" -o -iname "*.pdf" -o -iname "*.docx" -o -iname "*.odt" -o -iname "*.rtf" -o -iname "*.epub" \) -exec mv {} ~/Documents/Reading_Files/ \;
+    mkdir -p ~/Documents/Code && find . -type f -iname "*.py" -o -iname "*.vsix" -o -iname "*.js" -o -iname "*.ts" -o -iname "*.html" -o -iname "*.css" -o -iname "*.java" -o -iname "*.cpp" -o -iname "*.c" -o -iname "*.go" -o -iname "*.rb" -o -iname "*.php" -o -iname "*.sh" -o -iname "*.bash" -o -iname "*.swift" -o -iname "*.lua" -o -iname "*.json" -o -iname "*.xml" -o -iname "*.yaml" -o -iname "*.sql" -o -iname "*.pl" -exec mv {} ~/Documents/Code/ \;
+    mkdir -p ~/Downloads/Executables && find . -type f \( -iname "*.exe" -o -iname "*.msix" -o -iname "*.apk" -o -iname "*.bin" -o -iname "*.app" \) -exec mv {} ~/Downloads/Executables/ \;
+    mkdir -p ~/Pictures/Photos && find . -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.gif" -o -iname "*.heic" -o -iname "*.jfif" -o -iname "*.tiff" -o -iname "*.bmp" -o -iname "*.webp" \) -exec mv {} ~/Pictures/Photos/ \;
+    mkdir -p ~/Pictures/Videos && find . -type f \( -iname "*.wav" -o -iname "*.mov" -o -iname "*.mp4" -o -iname "*.avi" -o -iname "*.wmv" -o -iname "*.webm" -o -iname "*.mkv" -o -iname "*.flv" \) -exec mv {} ~/Pictures/Videos/ \;
+    mkdir -p ~/Pictures/Audio && find . -type f \( -iname "*.mp3" -o -iname "*.aac" -o -iname "*.flac" -o -iname "*.wav" -o -iname "*.ogg" -o -iname "*.m4a" -o -iname "*.wma" \) -exec mv {} ~/Pictures/Audio/ \;
+    echo "Done"
+}
+#starts the code
+echo "Welcome to the better downloads! I put all your downloads into folders that corespond with their file type!(Example a png goes to your pictures and a txt goes to documents and etc)"
+echo "If this is your first time please give me a minute, I am slow with LARGE download files\nWould you like to give me premission to delete things?(Y)es or (N)o. Also (H)elp to find out what I delete"
+read delete_Premission
+#Loops where the user decides if they want to get rid of any funny haha
+while true; do
+    if [[ "$delete_Premission" == "Y" ]] || [[ "$delete_Premission" == "y" ]]; then
+        clear
+        recycling_truck
+        break
+    elif [[ "$delete_Premission" == "N" ]] || [[ "$delete_Premission" == "n" ]]; then
+        clear
+        echo "Not deleting!"
+        break
+    elif [[ "$delete_Premission" == "H" ]] || [[ "$delete_Premission" == "h" ]]; then
+        clear
+        echo "All I am doing is any executable type of file (.exe, .msix, .apk, .bin, and .app) with the words 'setup' or 'x32', 'x64', 'x86' and moving them to the hard drive's recycling bin!"
+        echo "If this is your first time, please give me a minute. I am slow with LARGE download files!"
+        echo "Otherwise, would you like to give me permission to delete things? (Y)es or (N)o. Also (H)elp to find out what I delete."
+        read delete_Premission
+    else
+        clear
+        echo "Yeah, I don't know what that means, try again."
+        echo "If this is your first time, please give me a minute. I am slow with LARGE download files!"
+        echo "Otherwise, would you like to give me permission to delete things? (Y)es or (N)o. Also (H)elp to find out what I delete."
+        read delete_Premission
+    fi
+done
+
+moving_truck
+
