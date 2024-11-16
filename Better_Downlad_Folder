@@ -1,9 +1,38 @@
 #!/bin/bash
+#Checks what OS the user is using so we can make this *multifunctional*
+detect_os() {
+    local os_type
+    os_type=$(uname -s)
+    case "$os_type" in
+        Linux*)
+            OS="Linux"
+            ;;
+        Darwin*)
+            OS="Mac"
+            ;;
+        CYGWIN*|MINGW*)
+            OS="Windows"
+            ;;
+        *)
+            OS="Don't support that OS :/ send a message to Caleb Daze on Github with your OS"
+            ;;
+    esac
+}
+
 #This is where the program deletes any extra programs
-recycling_truck(){
-    echo "Working!"
+recycling_truck() {
+    echo "Moving to the Trash!"
+    if [[ "$OS" == "Linux" ]] || [[ "$OS" == "Mac" ]]; then
+        RECYCLE_BIN="$HOME/.local/share/Trash/files"
+    elif [[ "$OS" == "Windows" ]]; then
+        RECYCLE_BIN="$HOME/AppData/Local/Temp"
+    else
+        echo "Don't support that OS :/ send a message to Caleb Daze on Github with your OS"
+        return
+    fi
     cd ~/Downloads/
-    find ~/Downloads/ -type f \( -iname "*.exe" -o -iname "*.msix" -o -iname "*.apk" -o -iname "*.bin" -o -iname "*.app" \) \( -iname "*x32*" -o -iname "*x64*" -o -iname "*x86*" -o -iname "*setup*" -o -iname "*installer*" \) | while read file; do mv "$file" "$RECYCLE.BIN"; done
+    find ~/Downloads/ -type f \( -iname "*.exe" -o -iname "*.msix" -o -iname "*.apk" -o -iname "*.bin" -o -iname "*.app" \) \ \( -iname "*x32*" -o -iname "*x64*" -o -iname "*x86*" -o -iname "*setup*" -o -iname "*installer*" \) | while read file; do mv "$file" "$RECYCLE_BIN"
+    done
 }
 #Main source of the program where it makes folders/directorys and move the files to them
 moving_truck(){
@@ -19,8 +48,10 @@ moving_truck(){
     echo "Done"
 }
 #starts the code
+detect_os
 echo "Welcome to the better downloads! I put all your downloads into folders that corespond with their file type!(Example a png goes to your pictures and a txt goes to documents and etc)"
-echo "If this is your first time please give me a minute, I am slow with LARGE download files\nWould you like to give me premission to delete things?(Y)es or (N)o. Also (H)elp to find out what I delete"
+echo "If this is your first time please give me a minute, I am slow with LARGE download files"
+echo "Would you like to give me premission to delete things?(Y)es or (N)o. Also (H)elp to find out what I delete"
 read delete_Premission
 #Loops where the user decides if they want to get rid of any funny haha
 while true; do
@@ -34,7 +65,7 @@ while true; do
         break
     elif [[ "$delete_Premission" == "H" ]] || [[ "$delete_Premission" == "h" ]]; then
         clear
-        echo "All I am doing is any executable type of file (.exe, .msix, .apk, .bin, and .app) with the words 'setup' or 'x32', 'x64', 'x86' and moving them to the hard drive's recycling bin!"
+        echo "All I am doing is any executable type of file (.exe, .msix, .apk, .bin, and .app) with the words 'setup', 'installer', 'x32', 'x64', or 'x86' and moving them to the hard drive's recycling bin!"
         echo "If this is your first time, please give me a minute. I am slow with LARGE download files!"
         echo "Otherwise, would you like to give me permission to delete things? (Y)es or (N)o. Also (H)elp to find out what I delete."
         read delete_Premission
@@ -46,6 +77,4 @@ while true; do
         read delete_Premission
     fi
 done
-
 moving_truck
-
