@@ -17,6 +17,7 @@ detect_os() {
             OS="Don't support that OS :/ send a message to Caleb Daze on Github with your OS"
             ;;
     esac
+    echo "Detected OS: $OS"
 }
 
 #This is where the program deletes any extra programs
@@ -31,8 +32,7 @@ recycling_truck() {
         return
     fi
     cd ~/Downloads/
-    find ~/Downloads/ -type f \( -iname "*.exe" -o -iname "*.msix" -o -iname "*.apk" -o -iname "*.bin" -o -iname "*.app" \) \ \( -iname "*x32*" -o -iname "*x64*" -o -iname "*x86*" -o -iname "*setup*" -o -iname "*installer*" \) | while read file; do mv "$file" "$RECYCLE_BIN"
-    done
+    find ~/Downloads/ -type f \( -iname "*.exe" -o -iname "*.msix" -o -iname "*.apk" -o -iname "*.bin" -o -iname "*.app" \) \( -iname "*x32*" -o -iname "*x64*" -o -iname "*x86*" -o -iname "*setup*" -o -iname "*installer*" \) -exec mv {} "$RECYCLE_BIN" \;
 }
 #Main source of the program where it makes folders/directorys and move the files to them
 moving_truck(){
